@@ -28,6 +28,7 @@ This application currently supports:
 
 
 requires: pygame, psutil, PySimpleGUI
+
 Future updates aim to improve compatibility and include support for other systems.
 
 
