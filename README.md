@@ -22,34 +22,14 @@ Includes background music with toggle and exportable logs feature.
 This application currently supports:
 
 - Windows  
-- Ubuntu-based Linux distributions  
-- macOS   
+- Ubuntu-based Linux distributions - sudo apt install python3-tk, pip install pygame, psutil, pysimplegui
+- macOS - Install Python 3 + pip packages; brew install for pygame dependencies
+- FreeBSD - Ports/packages install required; ensure tkinter and pygame available
 
-Future updates aim to improve compatibility and include support for other Unix-like systems such as FreeBSD.
 
----
+requires: pygame, psutil, PySimpleGUI
+Future updates aim to improve compatibility and include support for other systems.
 
-## Installation & Usage
-
-Simply download and run the pre-built executable for your OS. No dependencies or manual setup required.  
-
-Alternatively, clone the repository and run the Python script with all dependencies installed.
-
----
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## Future Plans
-
-- Updates  
-- Additional OS support and compatibility improvements  
-- New features based on user feedback  
-
----
 
 ## Author
 
