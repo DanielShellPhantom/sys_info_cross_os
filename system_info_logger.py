@@ -1,11 +1,47 @@
-
-import PySimpleGUI as sg
-import psutil
-import pygame
 import time
-import os
 import datetime
 import platform  # For system info
+import os
+try:
+    import PySimpleGUI as sg
+    import psutil
+    import pygame
+except ImportError as e:
+    print(f"Missing dependency: {e.name}. Please install it using pip.")
+    exit(1)
+
+def get_desktop_path():
+    # Try XDG standard (Linux)
+    def get_xdg_user_dir(dir_name):
+        config_file = os.path.expanduser("~/.config/user-dirs.dirs")
+        if not os.path.isfile(config_file):
+            return None
+        with open(config_file, 'r') as f:
+            for line in f:
+                if line.startswith(f'XDG_{dir_name}_DIR'):
+                    path = line.split('=')[1].strip().strip('"').replace('$HOME', os.path.expanduser("~"))
+                    return os.path.expandvars(path)
+        return None
+
+    desktop = None
+    system = platform.system()
+
+    if system == "Linux" or system == "Darwin":  # macOS is 'Darwin' in platform.system()
+        desktop = get_xdg_user_dir("DESKTOP")
+
+    if system == "FreeBSD":
+        # For FreeBSD, you can assume it follows similar to Linux
+        desktop = os.path.join(os.path.expanduser("~"), "Desktop")
+
+    # First fallback: ~/Desktop
+    if not desktop or not os.path.exists(desktop):
+        desktop = os.path.join(os.path.expanduser("~"), "Desktop")
+
+    # Final fallback: home directory (~)
+    if not os.path.exists(desktop):
+        desktop = os.path.expanduser("~")
+
+    return desktop
 
 
 ascii_art = r"""
@@ -107,7 +143,7 @@ sg.theme('DarkGreen4')
 font = ('Courier New', 14)
 
 layout = [
-    [sg.Text('🖥️ Daniel N Phantom Shell Sys Info', font=('Helvetica', 18), justification='center', text_color='#00FF00')],
+    [sg.Text('Phantom Shell Sys Info', font=('Helvetica', 18), justification='center', text_color='#00FF00')],
     [sg.Text('CPU Usage:', font=font, text_color='#00FF00'), sg.Text('', key='-CPU-', size=(12,1), font=font, text_color='#00FF00')],
     [sg.Text('RAM Usage:', font=font, text_color='#00FF00'), sg.Text('', key='-RAM-', size=(12,1), font=font, text_color='#00FF00')],
     [sg.Text('Disk Usage:', font=font, text_color='#00FF00'), sg.Text('', key='-DISK-', size=(12,1), font=font, text_color='#00FF00')],
@@ -120,14 +156,19 @@ layout = [
 ]
 try:
     pygame.mixer.init()
+    mixer_initialized = True
 except pygame.error:
     print("Warning: pygame mixer could not initialize, music will be disabled.")
+    mixer_initialized = False
 
-pygame.mixer.init()
-pygame.mixer.music.load('background_music.mp3')  # Make sure this file is in the same folder
-pygame.mixer.music.play(-1)  # Loop indefinitely
-
-music_on = True  # music starts playing by default
+music_file = 'background_music.mp3'  # Make sure this file is in the same folder
+if mixer_initialized and os.path.exists(music_file):
+    pygame.mixer.music.load(music_file)
+    pygame.mixer.music.play(-1)
+    music_on = True
+else:
+    print("Music file not found or mixer not initialized, skipping playback.")
+    music_on = False
 
 window = sg.Window('Daniel N Phantom Shell Sys Info', layout,
                    background_color='#000000',
@@ -135,7 +176,7 @@ window = sg.Window('Daniel N Phantom Shell Sys Info', layout,
                    finalize=True)
 
 def export_logs(cpu, ram, disk, upload, download, uptime):
-    desktop = os.path.join(os.path.expanduser("~"), "Desktop")
+    desktop = get_desktop_path()
     timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
     filename = f"sysinfo_log_{timestamp}.txt"
     filepath = os.path.join(desktop, filename)
@@ -187,3 +228,5 @@ window.close()
 pygame.mixer.music.stop()
 pygame.mixer.quit()
 
+if __name__ == '__main__':
+    print("Daniel N Phantom Shell Sys Info started.")
