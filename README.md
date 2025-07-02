@@ -61,10 +61,6 @@ pip install psutil pygame PySimpleGUI
 
 Running the Application
 
-Clone the repository:
-git clone https://github.com/yourusername/phantom-shell-sys-info.git
-cd phantom-shell-sys-info
-
 Run the Python script:
 python phantom_shell_sys_info.py
 
