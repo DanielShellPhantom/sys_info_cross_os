@@ -93,7 +93,7 @@ Notes
 
 The music file (background_music.mp3) must be placed in the same directory as the script or specify the correct file path.
 
-The application will display system stats on a GUI using PySimpleGUI and can be toggled using the "Music ON" button.
+The application will display system stats on a GUI using PySimpleGUI.
 
 Logs will be saved to the Desktop by default, and the filename will include the timestamp for easy identification.
 
