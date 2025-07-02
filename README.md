@@ -3,7 +3,7 @@
 This is a cross-platform system information tool built using Python. It displays real-time system stats such as CPU usage, RAM usage, disk usage, network speeds, and system uptime. It also includes background music support and a log export feature for convenience.
 
 ## Features:
-- **Cross-Platform Support**: Works on Linux, macOS, and FreeBSD.
+- **Cross-Platform Support**: Works on Linux, macOS, Windows (check the .exe release) and FreeBSD.
 - **Real-Time Stats**: Displays system stats (CPU, RAM, disk usage, upload/download speed, and uptime) with automatic refreshing.
 - **Background Music**: Toggle background music (MP3 file) on or off.
 - **Log Export**: Export system stats to a text file on the Desktop.
